@@ -5,6 +5,10 @@ const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('.big-picture__cancel');
 
+const NUMBER_OF_COMMENTS = 5;
+let commentsCounter = 0;
+let comments = [];
+
 const createComment = ({ avatar, name, message }) => {
   const comment = document.createElement('li');
   comment.innerHTML =
@@ -18,22 +22,33 @@ const createComment = ({ avatar, name, message }) => {
   return comment;
 };
 
-const renderComments = (comments) => {
+const renderComments = () => {
+  commentsCounter += NUMBER_OF_COMMENTS;
+  commentCount.classList.remove('hidden');
+
+  if (commentsCounter >= comments.length) {
+    commentsLoader.classList.add('hidden');
+    commentsCounter = comments.length;
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
+
+  const moreCommentsFragment = document.createDocumentFragment();
+  for (let i = 0; i < commentsCounter; i++) {
+    const commentElement = createComment(comments[i]);
+    moreCommentsFragment.append(commentElement);
+  }
+
   commentList.innerHTML = '';
-
-  const bigPicturefragment = document.createDocumentFragment();
-  comments.forEach((comment) => {
-    const commentItem = createComment(comment);
-    bigPicturefragment.append(commentItem);
-  });
-
-  commentList.append(bigPicturefragment);
+  commentList.append(moreCommentsFragment);
+  commentCount.innerHTML = `${commentsCounter} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
 
 const hideBigPicture = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
+  commentsCounter = 0;
 };
 
 function onEscKeyDown(evt) {
@@ -46,6 +61,8 @@ function onEscKeyDown(evt) {
 const onCancelButtonClick = () => {
   hideBigPicture();
 };
+
+const onCommentsLoaderClick = () => renderComments();
 
 const renderPictureDetails = ({ url, likes, description }) => {
   bigPicture.querySelector('.big-picture__img img').src = url;
@@ -62,9 +79,13 @@ const showBigPicture = (data) => {
   document.addEventListener('keydown', onEscKeyDown);
 
   renderPictureDetails(data);
-  renderComments(data.comments);
+  comments = data.comments;
+  if (comments.length > 0) {
+    renderComments();
+  }
 };
 
 cancelButton.addEventListener('click', onCancelButtonClick);
+commentsLoader.addEventListener('click', onCommentsLoaderClick);
 
 export { showBigPicture };
