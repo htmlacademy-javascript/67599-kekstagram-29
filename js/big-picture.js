@@ -82,6 +82,10 @@ const showBigPicture = (data) => {
   comments = data.comments;
   if (comments.length > 0) {
     renderComments();
+  } else {
+    commentList.innerHTML = '';
+    commentCount.classList.remove('hidden');
+    commentCount.innerHTML = 'Никто не оставил своих комментариев!';
   }
 };
 
