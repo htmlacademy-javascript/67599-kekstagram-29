@@ -1,5 +1,6 @@
 const image = document.querySelector('.img-upload__preview img');
 const form = document.querySelector('.img-upload__effects');
+const formSlider = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectLevel = document.querySelector('.effect-level__value');
 
@@ -57,7 +58,7 @@ let chosenEffect = DEFAULT_EFFECT;
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {
-  sliderElement.classList.remove('hidden');
+  formSlider.classList.remove('hidden');
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
@@ -68,7 +69,7 @@ const updateSlider = () => {
   });
 
   if (isDefault()) {
-    sliderElement.classList.add('hidden');
+    formSlider.classList.add('hidden');
   }
 };
 

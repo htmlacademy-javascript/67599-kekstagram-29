@@ -76,13 +76,26 @@ const validateTags = (value) => {
     .trim()
     .split(' ')
     .filter((tag) => tag.trim().length);
-  return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
+  return hasUniqueTags(tags);
 };
 
 pristine.addValidator(
   hashtagField,
+  hasValidCount,
+  `Максимум ${MAX_HASHTAG_COUNT} хештегов`
+);
+
+pristine.addValidator(
+  hashtagField,
+  isValidTag,
+  'Неправильный хештег'
+);
+
+
+pristine.addValidator(
+  hashtagField,
   validateTags,
-  'Неправильно заполнены хэштеги'
+  'Хештеги должны быть уникальными'
 );
 
 const onFormSubmit = (evt) => {
