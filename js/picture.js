@@ -22,6 +22,7 @@ const createPicture = (data) => {
 };
 
 const renderPictures = (pictures) => {
+  picturesContainer.querySelectorAll('.picture').forEach((element) => element.remove());
   const pictureFragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const pictureItem = createPicture(picture);
