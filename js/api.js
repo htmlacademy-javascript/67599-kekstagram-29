@@ -18,7 +18,7 @@ const getData = async (onSuccess, onFail) => {
 const sendData = async (onSuccess, onFail, body) => {
   try {
     const response = await fetch(
-      'https://25.javascript.pages.academy/kekstagram',
+      'https://29.javascript.pages.academy/kekstagram',
       {
         method: 'POST',
         body,

@@ -73,8 +73,7 @@ const onFileInputChange = () => {
 
 const startsWithHash = (string) => string[0] === '#';
 
-const hasValidLength = (string) =>
-  string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
+const hasValidLength = (string) => string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
 
 const hasValidSymbols = (string) => !UNVALID_SYMBOLS.test(string.slice(1));
 
@@ -88,7 +87,7 @@ const hasUniqueTags = (tags) => {
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
-const validateTags = (value) => {
+const validateHasUniqueTags = (value) => {
   const tags = value
     .trim()
     .split(' ')
@@ -96,11 +95,14 @@ const validateTags = (value) => {
   return hasUniqueTags(tags);
 };
 
-pristine.addValidator(
-  hashtagField,
-  hasValidCount,
-  `Максимум ${MAX_HASHTAG_COUNT} хештегов`
-);
+const validateHasValidCountTags = (value) => {
+  const tags = value
+    .trim()
+    .split(' ')
+    .filter((tag) => tag.trim().length);
+  return hasValidCount(tags);
+};
+
 
 pristine.addValidator(
   hashtagField,
@@ -108,10 +110,15 @@ pristine.addValidator(
   'Неправильный хештег'
 );
 
+pristine.addValidator(
+  hashtagField,
+  validateHasValidCountTags,
+  `Максимум ${MAX_HASHTAG_COUNT} хештегов`
+);
 
 pristine.addValidator(
   hashtagField,
-  validateTags,
+  validateHasUniqueTags,
   'Хештеги должны быть уникальными'
 );
 
