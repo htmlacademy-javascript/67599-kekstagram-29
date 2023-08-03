@@ -11,7 +11,7 @@ let comments = [];
 
 const createComment = ({ avatar, name, message }) => {
   const comment = document.createElement('li');
-  comment.innerHTML =
+  comment.textContent =
     '<img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p>';
   comment.classList.add('social__comment');
 
@@ -39,9 +39,9 @@ const renderComments = () => {
     moreCommentsFragment.append(commentElement);
   }
 
-  commentList.innerHTML = '';
+  commentList.textContent = '';
   commentList.append(moreCommentsFragment);
-  commentCount.innerHTML = `${commentsCounter} из <span class="comments-count">${comments.length}</span> комментариев`;
+  commentCount.textContent = `${commentsCounter} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
 
 const hideBigPicture = () => {
@@ -58,11 +58,11 @@ function onEscKeyDown(evt) {
   }
 }
 
-const onCancelButtonClick = () => {
+const сancelButtonClick = () => {
   hideBigPicture();
 };
 
-const onCommentsLoaderClick = () => renderComments();
+const сommentsLoaderClick = () => renderComments();
 
 const renderPictureDetails = ({ url, likes, description }) => {
   bigPicture.querySelector('.big-picture__img img').src = url;
@@ -83,13 +83,13 @@ const showBigPicture = (data) => {
   if (comments.length > 0) {
     renderComments();
   } else {
-    commentList.innerHTML = '';
+    commentList.textContent = '';
     commentCount.classList.remove('hidden');
-    commentCount.innerHTML = 'Никто не оставил своих комментариев!';
+    commentCount.textContent = 'Никто не оставил своих комментариев!';
   }
 };
 
-cancelButton.addEventListener('click', onCancelButtonClick);
-commentsLoader.addEventListener('click', onCommentsLoaderClick);
+cancelButton.addEventListener('click', сancelButtonClick);
+commentsLoader.addEventListener('click', сommentsLoaderClick);
 
 export { showBigPicture };

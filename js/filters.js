@@ -1,4 +1,4 @@
-import { debounce } from './util.js';
+import { calledDebounce } from './util.js';
 
 const PICTURES_COUNT = 10;
 const Filter = {
@@ -12,17 +12,17 @@ const filtersElement = document.querySelector('.img-filters');
 let currentFilter = '';
 let pictures = [];
 
-const randomSort = () => Math.random() - 0.5;
+const getRandomSort = () => Math.random() - 0.5;
 
-const discussedSort = (pictureA, pictureB) =>
+const getDiscussedSort = (pictureA, pictureB) =>
   pictureB.comments.length - pictureA.comments.length;
 
 const filterPictures = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
-      return [...pictures].sort(randomSort).slice(0, PICTURES_COUNT);
+      return [...pictures].sort(getRandomSort).slice(0, PICTURES_COUNT);
     case Filter.DISCUSSED:
-      return [...pictures].sort(discussedSort);
+      return [...pictures].sort(getDiscussedSort);
     default:
       return [...pictures];
   }
@@ -35,7 +35,7 @@ const turnFilterOn = (loadedPictures) => {
 };
 
 const setOnFilterClick = (cb) => {
-  const debouncedCallback = debounce(cb);
+  const debouncedCallback = calledDebounce(cb);
 
   filtersElement.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
