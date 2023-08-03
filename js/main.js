@@ -5,13 +5,13 @@ import { setOnFormSubmit, hideModal } from './forms.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
 import { setOnFilterClick, turnFilterOn, filterPictures } from './filters.js';
 
-const onGetDataSuccess = (data) => {
+const getDataSuccess = (data) => {
   turnFilterOn(data);
   renderPictures(filterPictures());
   setOnFilterClick(renderPictures);
 };
 
-const onSendDataSuccess = () => {
+const sendDataSuccess = () => {
   hideModal();
   showSuccessMessage();
 };
@@ -21,7 +21,7 @@ const onSendDataError = () => {
 };
 
 setOnFormSubmit(async (data) => {
-  await sendData(onSendDataSuccess, onSendDataError, data);
+  await sendData(sendDataSuccess, onSendDataError, data);
 });
 
-getData(onGetDataSuccess, showAlert);
+getData(getDataSuccess, showAlert);

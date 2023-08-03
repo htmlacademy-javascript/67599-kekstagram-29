@@ -16,7 +16,7 @@ const MAX_HASHTAG_COUNT = 5;
 const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
 const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g;
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const FILES_TYPES = ['jpg', 'jpeg', 'png'];
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -52,14 +52,14 @@ function onEscKeyDown(evt) {
 
 const isValidType = (file) => {
   const fileName = file.name.toLowerCase();
-  return FILE_TYPES.some((it) => fileName.endsWith(it));
+  return FILES_TYPES.some((it) => fileName.endsWith(it));
 };
 
-const onCancelButtonClick = () => {
+const cancelButtonClick = () => {
   hideModal();
 };
 
-const onFileInputChange = () => {
+const changeFileInput = () => {
   const file = fileField.files[0];
 
   if (file && isValidType(file)) {
@@ -73,7 +73,8 @@ const onFileInputChange = () => {
 
 const startsWithHash = (string) => string[0] === '#';
 
-const hasValidLength = (string) => string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
+const hasValidLength = (string) =>
+  string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
 
 const hasValidSymbols = (string) => !UNVALID_SYMBOLS.test(string.slice(1));
 
@@ -103,10 +104,27 @@ const validateHasValidCountTags = (value) => {
   return hasValidCount(tags);
 };
 
+const validateIsValidTag = (value) => {
+  const tags = value
+    .trim()
+    .split(' ')
+    .filter((tag) => tag.trim().length);
+  return tags.every(isValidTag);
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
 
 pristine.addValidator(
   hashtagField,
-  isValidTag,
+  validateIsValidTag,
   'Неправильный хештег'
 );
 
@@ -122,16 +140,6 @@ pristine.addValidator(
   'Хештеги должны быть уникальными'
 );
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Отправляю...';
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-};
-
 const setOnFormSubmit = (cb) => {
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
@@ -145,7 +153,7 @@ const setOnFormSubmit = (cb) => {
   });
 };
 
-fileField.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
+fileField.addEventListener('change', changeFileInput);
+cancelButton.addEventListener('click', cancelButtonClick);
 
 export { setOnFormSubmit, hideModal };

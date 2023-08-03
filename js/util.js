@@ -29,7 +29,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const calledDebounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -41,5 +41,5 @@ export {
   getRandomInteger,
   getRandomArrayElement,
   showAlert,
-  debounce
+  calledDebounce
 };
